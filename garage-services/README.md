@@ -1,12 +1,4 @@
-# Symphonia / OSCON 2017 Tutorial
-
-## Chat room
-
-Join this public Hipchat room to discuss and share information with your fellow attendees: https://www.hipchat.com/gUqQZrLrv
-
-## Resources
-
-After the tutorial, you can find links and resources here: https://bit.ly/symph-oscon-2017
+# CDK Garage Lamda Session
 
 ## Initial Setup
 
@@ -19,30 +11,27 @@ After the tutorial, you can find links and resources here: https://bit.ly/symph-
 
 1. Make sure your AWS user has full permissions within your AWS account.
 
-    The most flexible scenario is one in which your user is part of the `Administrators` group. 
+    The most flexible scenario is one in which your user is part of the `Admin` group. 
     
     You can check from the command line:
     ```bash
     $ aws iam get-group --group-name Admin --query 'Users[].UserName'
     ```
-    The output will be the list of users in the `Administrators` group:
+    The output will be the list of users in the `Admin` group:
     ```json
       [
           "sudipta"
       ]
     ```
     
-1. Download and unzip the tutorial project:
+2. Download the tutorial project:
 
     ```bash
-    $ wget https://github.com/symphoniacloud/oscon-2017-tutorial/archive/master.zip
-      ...
-    $ unzip oscon-2017-tutorial-master.zip
-      ...
-    $ cd oscon-2017-tutorial-master
+    $ git clone https://github.com/sudiptamodak1987/CDK-Garage.git
+     
     ```
     
-1. Create the tutorial's build pipeline using Cloudformation. The build pipeline will create the application, also 
+3. Create the tutorial's build pipeline using Cloudformation. The build pipeline will create the application, also 
 with Cloudformation. Note that the build pipeline stack name is specified using the `--stack-name` command line flag, while
 the application stack name is specified as a parameter to the stack template.
    
@@ -63,7 +52,7 @@ the application stack name is specified as a parameter to the stack template.
     }
     ```
     
-1. Get the S3 url where you'll upload code during the tutorial. Use your build pipeline stack name if it's different from this:
+4. Get the S3 url where you'll upload code during the tutorial. Use your build pipeline stack name if it's different from this:
     ```bash
     $ aws cloudformation describe-stacks \
             --query 'Stacks[?StackName==`cdk-garage-test-pipeline`].Outputs[0][?OutputKey==`SourceS3Bucket`].OutputValue' \
@@ -71,11 +60,8 @@ the application stack name is specified as a parameter to the stack template.
     ```
     The output should look something like this:
     ```
-    s3://oscon-2017-tutorial-build-pipeline-sources3location-hdea5qp6h2o
-    ```
-    It may be helpful to save this information in an environment variables (we'll use it later):
-    ```bash
-    export S3_SOURCE=YOUR_S3_BUCKET
+    s3://cdk-garage-test-pipeline-sources3location-1x7gtgb4yyr4r
+    
     ```
     
 ## Tutorial
@@ -95,19 +81,18 @@ Because each phase is standalone, don't worry if you're not able to finish or ma
     $ aws cloudformation delete-stack --stack-name cdk-garage-application
     ```
 
-1. Find the physical resource IDs for the build pipeline's S3 buckets
+2. Find the physical resource IDs for the build pipeline's S3 buckets
     ```bash
-    $ aws cloudformation list-stack-resources --stack-name oscon-2017-tutorial-build-pipeline \
+    $ aws cloudformation list-stack-resources --stack-name cdk-garage-test-pipeline \
           --query 'StackResourceSummaries[?ResourceType==`AWS::S3::Bucket`].PhysicalResourceId' \
           --output text
     ```
 
-1. Delete those buckets using the the S3 web console (https://console.aws.amazon.com/s3/home)
+3. Delete those buckets using the the S3 web console (https://console.aws.amazon.com/s3/home)
 
-1. Delete the build pipeline stack:
+4. Delete the build pipeline stack:
     ```bash
-    $ aws cloudformation delete-stack --stack-name oscon-2017-tutorial-build-pipeline
+    $ aws cloudformation delete-stack --stack-name cdk-garage-test-pipeline
     ```
     
------
-Copyright 2017, Symphonia LLC
+

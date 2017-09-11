@@ -12,7 +12,7 @@ public class GarageEventsLambda {
 
     public ApiGatewayProxyResponse handler(ApiGatewayProxyRequest request, Context context) throws Exception {
         ApiGatewayProxyResponse response = new ApiGatewayProxyResponse();
-        GarageEvent responseObject = new GarageEvent();
+        GarageEvent responseObject = new GarageEvent("Lambda", "Baja", "2017-09-18");
         String json = mapper.writeValueAsString(responseObject);
         response.setBody(json);
         response.setStatusCode(200);

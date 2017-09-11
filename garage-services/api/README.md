@@ -3,20 +3,11 @@
 ## Serverless Components
 
 1. Lambda function (events-ingest-lambda)
-1. API Gateway (`Api` in the `sam.yml` file)
+2. API Gateway (`Api` in the `sam.yml` file)
 
 ## Learn
 
 ### Fix the Lambda (again)!
-
-
-```
-
-We've introduced an API Gateway, which will forward HTTP requests to our Lambda function. However, that changes the input type for the Lambda.
-
-The previous unit test has been updated, and is failing because our Lambda code isn't handling the new input correctly.
-
-The `EventsIngestLambdaTest` is failing. Fix `EventsIngestLambda` and make the test pass.
 
 Once the test passes, deploy your application stack:
 
@@ -28,22 +19,7 @@ $ aws s3 cp target/garage-services-api-1.0-SNAPSHOT.zip s3://cdk-garage-test-pip
 
 Verify that the Code Pipeline deploy process has started: https://console.aws.amazon.com/codepipeline/home
 
-### Send some data!
 
-Once the API Gateway is deployed, we can send some test data to it using the `event-generator`.
-
-```bashc
-$ cd event-generator
-$ mvn clean package
-$ java -jar target/event-generator-1.0-SNAPSHOT.jar --limit 1 --stack oscon-2017-tutorial-application
-API url: https://o30vnzv5ci.execute-api.us-west-2.amazonaws.com/prod/events
-request: {"timestamp":1494108607587,"locationId":"1978BE5B1CD1DFA1A247E8B3BD6827D2","locationName":"Montgomery, AL","latitude":32.361538,"longitude":-86.279118,"city":"Montgomery","state":"AL","temperature":85.5631845254945}
-response: 200 / 1978BE5B1CD1DFA1A247E8B3BD6827D2
-```
-
-Note that the `event-generator` tool is just a convenience - feel free to use `curl` or any other tool
-to send HTTP POST requests to the `/prod/events` endpoint of your API Gateway. The format of the JSON request is 
-shown above.
 
 ### Validate the data!
 
