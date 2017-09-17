@@ -41,7 +41,7 @@ the application stack name is specified as a parameter to the stack template.
    The output should look something like this:
     ```json
     {
-        "StackId": "arn:aws:cloudformation:us-west-2:1234567890:stack/oscon-2017-tutorial-build-pipeline/7972b720-2f5b-11e7-bd3d-503acbd4dcfd"
+        "StackId": "arn:aws:cloudformation:us-west-2:1234567890:stack/cdk-garage-test-pipeline/7972b720-2f5b-11e7-bd3d-503acbd4dcfd"
     }
     ```
     
