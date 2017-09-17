@@ -2,12 +2,6 @@
 
 ## Initial Setup
 
-#### :warning: *Windows users may need edit the example commands. Here are some tips:*
-
-- Double-quotes (`"`) can be escaped with backslashes like this: (`\"`)
-- Variables substitution is `%VARIABLE_NAME%`
-- Instead of the `cat` command, use the `type` command
-- The backslashes used to indicate multi-line commands in the examples will need to be removed.
 
 1. Make sure your AWS user has full permissions within your AWS account.
 
@@ -15,6 +9,7 @@
     
     You can check from the command line:
     ```bash
+    $ aws configure
     $ aws iam get-group --group-name Admin --query 'Users[].UserName'
     ```
     The output will be the list of users in the `Admin` group:
@@ -31,14 +26,12 @@
      
     ```
     
-3. Create the tutorial's build pipeline using Cloudformation. The build pipeline will create the application, also 
+3. Create the build pipeline using Cloudformation. The build pipeline will create the application, also 
 with Cloudformation. Note that the build pipeline stack name is specified using the `--stack-name` command line flag, while
 the application stack name is specified as a parameter to the stack template.
    
-   :warning: Stack names must be unique within an AWS account. If multiple attendees are working in the same account, 
-   pick unique stack names for both stacks!
-   
     ```bash
+    $ cd garage-services
     $ aws cloudformation create-stack \
             --capabilities CAPABILITY_IAM \
             --stack-name cdk-garage-test-pipeline \
@@ -64,21 +57,13 @@ the application stack name is specified as a parameter to the stack template.
     
     ```
     
-## Tutorial
-
-Look at the `README.md` file in the `phase1` directory to get started.
-
-Work through each phase as directed by the instructors.
-
-Because each phase is standalone, don't worry if you're not able to finish or make a mistake. The next phase will have everything you need to keep going along with the rest of the group.
-
-## Teardown
+## Cleanup
 
 :warning: These steps must be completed in order, or resources might be stranded.
 
 1. Delete the application stack:
     ```bash
-    $ aws cloudformation delete-stack --stack-name cdk-garage-application
+    $ aws cloudformation delete-stack --stack-name cdk-garage-test-pipeline
     ```
 
 2. Find the physical resource IDs for the build pipeline's S3 buckets
