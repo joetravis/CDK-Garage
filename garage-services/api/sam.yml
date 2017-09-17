@@ -1,85 +1,85 @@
-AWSTemplateFormatVersion: '2010-09-09'
-Transform: AWS::Serverless-2016-10-31
-Description: CDK Garage Build Pipeline
-
-Resources:
-  Api:
-    Type: AWS::Serverless::Api
-    Properties:
-      StageName: prod
-      DefinitionBody:
-        swagger: "2.0"
-        info:
-          title:
-            Ref: AWS::StackName
-        basePath: "/prod"
-        schemes:
-        - "https"
-        paths:
-          /garageevents:
-            get:
-              produces:
-              - "application/json"
-              responses:
-                "200":
-                  description: "200 response"
-                  schema:
-                    $ref: "#/definitions/Empty"
-              x-amazon-apigateway-integration:
-                responses:
-                  default:
-                    statusCode: "200"
-                uri:
-                  Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GarageEventsLambda.Arn}/invocations"
-                httpMethod: "POST"
-                contentHandling: "CONVERT_TO_TEXT"
-                type: "aws_proxy"
-        definitions:
-          Empty:
-            type: "object"
-            title: "Empty Schema"
-          EventBodyModel:
-            type: "object"
-            properties:
-              name:
-                type: "string"
-              location:
-                type: "string"
-              date:
-                type: "string"
-            required:
-            - name
-            - location
-            - date
-        x-amazon-apigateway-request-validators:
-          ValidateBody:
-            validateRequestParameters: false
-            validateRequestBody: true
-
-
-  GarageEventsLambda:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: com.garage.GarageEventsLambda::handler
-      Runtime: java8
-      MemorySize: 256
-      Timeout: 10
-      CodeUri: lambda/target/lambda-1.0-SNAPSHOT.jar
-      Events:
-        ApiEvents:
-          Type: Api
-          Properties:
-            RestApiId: !Ref Api
-            Path: /garageevents
-            Method: GET
-
-Outputs:
-  ApiUrl:
-    Description: URL of your API endpoint
-    Value: !Join
-      - ''
-      - - https://
-        - !Ref Api
-        - '.execute-api.'
-        - !Ref 'AWS::Region'
-        - '.amazonaws.com/prod'
+#AWSTemplateFormatVersion: '2010-09-09'
+#Transform: AWS::Serverless-2016-10-31
+#Description: CDK Garage Build Pipeline
+#
+#Resources:
+#  Api:
+#    Type: AWS::Serverless::Api
+#    Properties:
+#      StageName: prod
+#      DefinitionBody:
+#        swagger: "2.0"
+#        info:
+#          title:
+#            Ref: AWS::StackName
+#        basePath: "/prod"
+#        schemes:
+#        - "https"
+#        paths:
+#          /garageevents:
+#            get:
+#              produces:
+#              - "application/json"
+#              responses:
+#                "200":
+#                  description: "200 response"
+#                  schema:
+#                    $ref: "#/definitions/Empty"
+#              x-amazon-apigateway-integration:
+#                responses:
+#                  default:
+#                    statusCode: "200"
+#                uri:
+#                  Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GarageEventsLambda.Arn}/invocations"
+#                httpMethod: "POST"
+#                contentHandling: "CONVERT_TO_TEXT"
+#                type: "aws_proxy"
+#        definitions:
+#          Empty:
+#            type: "object"
+#            title: "Empty Schema"
+#          EventBodyModel:
+#            type: "object"
+#            properties:
+#              name:
+#                type: "string"
+#              location:
+#                type: "string"
+#              date:
+#                type: "string"
+#            required:
+#            - name
+#            - location
+#            - date
+#        x-amazon-apigateway-request-validators:
+#          ValidateBody:
+#            validateRequestParameters: false
+#            validateRequestBody: true
+#
+#
+#  GarageEventsLambda:
+#    Type: AWS::Serverless::Function
+#    Properties:
+#      Handler: com.garage.GarageEventsLambda::handler
+#      Runtime: java8
+#      MemorySize: 256
+#      Timeout: 10
+#      CodeUri: lambda/target/lambda-1.0-SNAPSHOT.jar
+#      Events:
+#        ApiEvents:
+#          Type: Api
+#          Properties:
+#            RestApiId: !Ref Api
+#            Path: /garageevents
+#            Method: GET
+#
+#Outputs:
+#  ApiUrl:
+#    Description: URL of your API endpoint
+#    Value: !Join
+#      - ''
+#      - - https://
+#        - !Ref Api
+#        - '.execute-api.'
+#        - !Ref 'AWS::Region'
+#        - '.amazonaws.com/prod'
