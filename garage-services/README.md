@@ -1,5 +1,19 @@
 # CDK Garage Lamda Session
 
+## AWS Inline Lambda Function
+
+    'use strict'
+    console.log("Loading random-number-generator")
+    exports.handler = (event, context, callback) => {
+    // TODO implement
+    let min=0;
+    let max=10;
+    
+    let randomNumber = Math.floor(Math.random() * max) + min
+    callback(null, randomNumber);
+    };
+    
+
 ## Initial Setup
 
 
